@@ -1,22 +1,27 @@
 {
-    "builds": [{
+    "version": 2,
+    "builds": [
+      {
         "src": "example/wsgi.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb", "runtime": "python3.12" }
-    },
-    {
-        "src": "build_files.sh",
-        "use": "@vercel/static-build",
-        "config": { "distDir": "staticfiles_build" }
-    }],
-    "routes": [
-        {
-            "src": "/static/(.*)",
-            "dest": "/static/$1"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "example/wsgi.py"
+        "use": "@vercel/python3.12",
+        "config": {
+          "maxLambdaSize": "15mb",
+          "runtime": "python3.12",
+          "environment": {
+            "PYTHONPATH": "."
+          }
         }
-    ]
-}
+      }
+    ],
+    "routes": [
+      {
+        "src": "/static/(.*)",
+        "dest": "/static/$1"
+      }
+    ],
+    "env": {
+      "GUNICORN_WORKERS": "3",
+      "GUNICORN_TIMEOUT": "60"
+    }
+  }
+  
